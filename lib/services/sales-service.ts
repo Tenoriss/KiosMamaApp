@@ -120,13 +120,13 @@ export const SalesService = {
       }
 
       // 6. Handle credit (receivable)
-      if (data.paymentMethod === 'CREDIT' && data.customerId && data.customerName) {
+      if (data.paymentMethod === 'CREDIT' && data.customerName) {
         const paidAmount = data.paymentAmount < total ? data.paymentAmount : total
         const remaining = total - paidAmount
         if (remaining > 0) {
           const now = new Date().toISOString()
           await receivableRepo.create({
-            customerId: data.customerId,
+            customerId: data.customerId ?? data.customerName,
             customerName: data.customerName,
             saleId: sale.id,
             invoiceNumber,

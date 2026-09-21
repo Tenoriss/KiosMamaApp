@@ -14,7 +14,7 @@ function formatDigits(value: string | number, allowDecimal: boolean) {
   const normalized = allowDecimal ? raw.replace(/(?!^)-/g, '').replace(',', '.') : raw.replace(/\D/g, '')
   const [integer, decimal] = normalized.split('.')
   const formattedInteger = integer ? Number(integer).toLocaleString('en-US') : ''
-  return allowDecimal && decimal !== undefined ? `${formattedInteger}.${decimal.slice(0, 2)}` : formattedInteger
+  return allowDecimal && decimal !== undefined ? `${formattedInteger}.${decimal}` : formattedInteger
 }
 
 function parseValue(value: string, allowDecimal: boolean) {

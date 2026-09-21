@@ -39,7 +39,12 @@ export function ProductsContent() {
     setLoading(false)
   }, [])
 
-  useEffect(() => { reload() }, [reload])
+  useEffect(() => {
+    reload()
+    if (new URLSearchParams(window.location.search).get('action') === 'add') {
+      setShowFormDialog(true)
+    }
+  }, [reload])
 
   const filtered = products.filter(p => {
     const q = searchQuery.toLowerCase()

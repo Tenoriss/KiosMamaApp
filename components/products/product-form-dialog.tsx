@@ -358,18 +358,22 @@ export function ProductFormDialog({
           <NumberInput
             label="Harga Beli (MYR)"
             min="0"
+            allowDecimal
             value={form.purchasePrice}
             onValueChange={value => set('purchasePrice', value)}
             error={errors.purchasePrice}
-            placeholder="0"
+            placeholder="Contoh: 0.70"
+            helperText="Boleh masukkan nominal desimal sesuai kebutuhan"
           />
           <NumberInput
             label="Harga Jual (MYR)"
             min="0"
+            allowDecimal
             value={form.sellingPrice}
             onValueChange={value => set('sellingPrice', value)}
             error={errors.sellingPrice}
-            placeholder="0"
+            placeholder="Contoh: 1.00"
+            helperText="Boleh masukkan nominal desimal sesuai kebutuhan"
           />
         </div>
 
@@ -408,7 +412,7 @@ export function ProductFormDialog({
         />
       </div>
 
-      <div className="flex justify-end gap-2 p-5 pt-0 border-t border-border">
+      <div className="sticky bottom-0 z-10 flex justify-end gap-2 border-t border-border bg-card/95 p-5 pt-4 backdrop-blur-sm">
         <Button variant="outline" onClick={onClose} disabled={saving}>Batal</Button>
         <Button onClick={handleSubmit} loading={saving}>
           {isEditing ? 'Simpan Perubahan' : 'Tambah Produk'}

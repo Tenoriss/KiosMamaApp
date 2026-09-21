@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { useStoreName } from '@/components/providers/store-name'
 import { cn } from '@/lib/utils/cn'
 import {
@@ -23,7 +23,6 @@ import {
   Sparkles,
 } from 'lucide-react'
 import { useAuth } from '@/components/providers/auth-provider'
-import { useState } from 'react'
 
 const navItems = [
   {
@@ -100,9 +99,9 @@ type SidebarProps = {
 
 export function Sidebar({ onClose }: SidebarProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const { logout } = useAuth()
   const storeName = useStoreName()
-  const [showAiComingSoon, setShowAiComingSoon] = useState(false)
 
   return (
     <aside className="flex h-full w-64 flex-col border-r border-stone-200 bg-[#fbfaf7]/95 dark:border-stone-800 dark:bg-stone-950/95">
@@ -151,7 +150,12 @@ export function Sidebar({ onClose }: SidebarProps) {
         </ul>
         <button
           type="button"
-          onClick={() => setShowAiComingSoon(true)}
+          onClick={() => {
+            window.localStorage.setItem('kios-mama-open-ai-summary', 'true')
+            window.dispatchEvent(new Event('open-ai-summary'))
+            router.push('/dashboard')
+            onClose?.()
+          }}
           className="mt-4 flex w-full items-center gap-3 rounded-xl border border-dashed border-teal-300 bg-teal-50/70 px-3 py-2.5 text-left text-sm font-semibold text-teal-800 transition hover:bg-teal-100 dark:border-teal-700 dark:bg-teal-950/30 dark:text-teal-200 dark:hover:bg-teal-950/60"
         >
           <Sparkles className="h-4 w-4 shrink-0" />
@@ -167,33 +171,6 @@ export function Sidebar({ onClose }: SidebarProps) {
           </button>
         </div>
       </div>
-      {showAiComingSoon && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
-          onClick={() => setShowAiComingSoon(false)}
-        >
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="ai-coming-soon-title"
-            className="w-full max-w-sm rounded-2xl border border-border bg-card p-6 text-center shadow-2xl"
-            onClick={event => event.stopPropagation()}
-          >
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-teal-500/10 text-teal-700 dark:text-teal-300">
-              <Sparkles className="h-6 w-6" />
-            </div>
-            <h2 id="ai-coming-soon-title" className="mt-4 text-lg font-bold text-foreground">COMING SOON</h2>
-            <p className="mt-2 text-sm text-muted-foreground">Fitur ringkasan otomatis menggunakan AI sedang disiapkan.</p>
-            <button
-              type="button"
-              onClick={() => setShowAiComingSoon(false)}
-              className="mt-5 rounded-xl bg-[#173f3a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#245a52]"
-            >
-              Mengerti
-            </button>
-          </div>
-        </div>
-      )}
     </aside>
   )
 }

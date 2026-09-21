@@ -188,3 +188,14 @@
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-muted-foreground;
 }
+
+@keyframes dashboardTicker {
+  from { transform: translateY(0); }
+  to { transform: translateY(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-ticker {
+    animation-play-state: paused;
+  }
+}
